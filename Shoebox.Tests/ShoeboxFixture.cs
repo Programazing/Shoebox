@@ -34,7 +34,7 @@ namespace Shoebox.Tests
         [Test]
         public void ShoeBox_LoadsSettingsFile_WhenGivenAPath()
         {
-            SystemUnderTest = new Common.Shoebox(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Common.SettingsFile.FileName));
+            SystemUnderTest = new Common.Shoebox(TestHelpers.DesktopLocation());
 
             SystemUnderTest.Settings.UserSettings.Users.FirstOrDefault().UserName.Should().Be("DefaultUser");
         }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Shoebox.Tests</AssemblyName>
-    <RootNamespace>ShoeboxTests</RootNamespace>
+    <RootNamespace>Shoebox.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
