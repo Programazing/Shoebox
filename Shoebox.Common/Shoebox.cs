@@ -4,13 +4,13 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Shoebox.Common
 {
     public class Shoebox
-    {
-        private string SettingsPath;
+    {        
         private ServiceProvider ServiceProvider;
         public Settings Settings;
 
@@ -19,13 +19,11 @@ namespace Shoebox.Common
             SetFields(filePath);
 
             BuildServices();
-
         }
 
         private void SetFields(string filePath)
         {
-            SettingsPath = SettingsFile.GetValidPath(filePath);
-
+            SettingsFile.SetValidPath(filePath);
         }
 
         private void BuildServices()
@@ -36,7 +34,6 @@ namespace Shoebox.Common
             ServiceProvider = services.BuildServiceProvider();
 
             Settings = ServiceProvider.GetService<App>().GetSettings();
-
         }
 
         private void ConfigureServices(IServiceCollection services)
@@ -48,7 +45,7 @@ namespace Shoebox.Common
             );
 
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(SettingsPath).ToString())
+                .SetBasePath(Directory.GetParent(SettingsFile.SettingsPath).ToString())
                 .AddJsonFile(SettingsFile.FileName, optional: false)
                 .AddEnvironmentVariables()
                 .Build();
@@ -57,7 +54,16 @@ namespace Shoebox.Common
             services.AddOptions();
 
             services.AddTransient<App>();
+        }
 
+        public void AddUser(IEnumerable<User> users)
+        {
+            var newUsersList = Settings.UserSettings.Users.Concat(users);
+            Settings.UserSettings.Users = newUsersList;
+
+            SettingsFile.AddUser(Settings);
+
+            Settings = ServiceProvider.GetService<App>().GetSettings();
         }
     }
 }

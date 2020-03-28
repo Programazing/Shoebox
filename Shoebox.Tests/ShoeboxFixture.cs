@@ -38,5 +38,18 @@ namespace Shoebox.Tests
 
             SystemUnderTest.Settings.UserSettings.Users.FirstOrDefault().UserName.Should().Be("DefaultUser");
         }
+
+        [Test]
+        public void Shoebox_Adds_AUser()
+        {
+            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe"));
+
+            SystemUnderTest
+                .Settings
+                .UserSettings
+                .Users
+                .Where(x => x.UserName == "JohnDoe")
+                .FirstOrDefault().UserName.Should().Be("JohnDoe");
+        }
     }
 }

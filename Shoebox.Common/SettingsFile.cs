@@ -9,27 +9,33 @@ namespace Shoebox.Common
     public static class SettingsFile
     {
         public static string FileName = "appsettings.json";
+        public static string SettingsPath;
 
-        public static string GetValidPath(string path)
+        public static void SetValidPath(string path)
         {
             var filePath = string.IsNullOrEmpty(path) ? DefaultPath() : path;
 
-            if (!FileExists(filePath)) { CreateSettingsFile(filePath); }
+            SettingsPath = filePath;
 
-            return filePath;
+            if (!FileExists(filePath)) { CreateSettingsFile(); } 
         }
-        private static void CreateSettingsFile(string filePath)
+        private static void CreateSettingsFile()
         {
-            var folder = Directory.GetParent(filePath).ToString();
+            var folder = Directory.GetParent(SettingsPath).ToString();
 
             if (!DirectoryExists(folder)) { Directory.CreateDirectory(Directory.GetParent(folder).ToString()); }
 
-            if (!FileExists(filePath))
+            if (!FileExists(SettingsPath))
             {
-                string jsonString = JsonSerializer.Serialize(DefaultSettings(), JsonOptions);
-
-                File.WriteAllText(filePath, jsonString);
+                WriteToSettingsFile(DefaultSettings());
             }
+        }
+
+        private static void WriteToSettingsFile(Settings settings)
+        {
+            string jsonString = JsonSerializer.Serialize(settings, JsonOptions);
+
+            File.WriteAllText(SettingsPath, jsonString);
         }
 
         private static string DefaultPath() => Path.Combine(Directory.GetCurrentDirectory(), FileName);
@@ -45,6 +51,12 @@ namespace Shoebox.Common
 
             return settings;
         }
+
+        public static void AddUser(Settings settings)
+        {
+            WriteToSettingsFile(settings);
+        }
+
         private static bool FileExists(string path) => File.Exists(path);
         private static bool DirectoryExists(string path) => Directory.Exists(path);
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
