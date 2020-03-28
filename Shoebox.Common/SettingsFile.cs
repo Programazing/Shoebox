@@ -6,11 +6,11 @@ using System.Text.Json;
 
 namespace Shoebox.Common
 {
-    internal static class SettingsFile
+    public static class SettingsFile
     {
-        internal static string FileName = "appsettings.json";
+        public static string FileName = "appsettings.json";
 
-        internal static string GetValidPath(string path)
+        public static string GetValidPath(string path)
         {
             var filePath = string.IsNullOrEmpty(path) ? DefaultPath() : path;
 
