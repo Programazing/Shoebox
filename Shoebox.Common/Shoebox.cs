@@ -58,19 +58,34 @@ namespace Shoebox.Common
 
         public void AddUser(User user)
         {
-            if(!ContainsUsername(user))
+            if(!SettingsContainsUsername(user))
             {
                 Settings.UserSettings.Users.Add(user);
 
-                SettingsFile.AddUser(Settings);
+                SettingsFile.WriteToSettingsFile(Settings);
 
-                Settings = ServiceProvider.GetService<App>().GetSettings();
-            }
-
-            bool ContainsUsername(User user)
-            {
-                return Settings.UserSettings.Users.Any(x => x.UserName == user.UserName);
+                UpdateSettings();
             }
         }
+
+        public void RemoveUser(User user)
+        {
+            if (SettingsContainsUsername(user))
+            {
+                var userToRemove = Settings.UserSettings.Users.Single(x => x.UserName == user.UserName);
+                Settings.UserSettings.Users.Remove(userToRemove);
+
+                SettingsFile.WriteToSettingsFile(Settings);
+
+                UpdateSettings();
+            }
+        }
+
+        private void UpdateSettings()
+        {
+            Settings = ServiceProvider.GetService<App>().GetSettings();
+        }
+
+        private bool SettingsContainsUsername(User user) => Settings.UserSettings.Users.Any(x => x.UserName == user.UserName);
     }
 }

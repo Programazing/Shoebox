@@ -31,7 +31,7 @@ namespace Shoebox.Common
             }
         }
 
-        private static void WriteToSettingsFile(Settings settings)
+        public static void WriteToSettingsFile(Settings settings)
         {
             string jsonString = JsonSerializer.Serialize(settings, JsonOptions);
 
@@ -50,11 +50,6 @@ namespace Shoebox.Common
             var settings = new Settings() { AppSettings = appSettings, UserSettings = userSettings };
 
             return settings;
-        }
-
-        public static void AddUser(Settings settings)
-        {
-            WriteToSettingsFile(settings);
         }
 
         private static bool FileExists(string path) => File.Exists(path);
