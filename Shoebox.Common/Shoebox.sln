@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shoebox.Common", "Shoebox.Common.csproj", "{6095D759-2507-4E61-9776-AA1E93DBA4CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoebox.Common", "Shoebox.Common.csproj", "{6095D759-2507-4E61-9776-AA1E93DBA4CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shoebox.Tests", "..\Shoebox.Tests\Shoebox.Tests.csproj", "{4D6127AE-0DD8-45D8-95D5-7F4F83CC59DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoebox.Tests", "..\Shoebox.Tests\Shoebox.Tests.csproj", "{4D6127AE-0DD8-45D8-95D5-7F4F83CC59DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
