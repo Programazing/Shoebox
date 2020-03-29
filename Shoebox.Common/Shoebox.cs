@@ -56,14 +56,21 @@ namespace Shoebox.Common
             services.AddTransient<App>();
         }
 
-        public void AddUser(IEnumerable<User> users)
+        public void AddUser(User user)
         {
-            var newUsersList = Settings.UserSettings.Users.Concat(users);
-            Settings.UserSettings.Users = newUsersList;
+            if(!ContainsUsername(user))
+            {
+                Settings.UserSettings.Users.Add(user);
 
-            SettingsFile.AddUser(Settings);
+                SettingsFile.AddUser(Settings);
 
-            Settings = ServiceProvider.GetService<App>().GetSettings();
+                Settings = ServiceProvider.GetService<App>().GetSettings();
+            }
+
+            bool ContainsUsername(User user)
+            {
+                return Settings.UserSettings.Users.Any(x => x.UserName == user.UserName);
+            }
         }
     }
 }

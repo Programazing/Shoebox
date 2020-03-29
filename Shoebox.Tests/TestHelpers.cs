@@ -20,6 +20,7 @@ namespace Shoebox.Tests
             var fileAssociations = new List<FileAssociations> { fileAssociation };
             return new List<User>
             { 
+                new User() { UserName = "DefaultUser", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories },
                 new User() { UserName = "JohnDoe", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories }
             };
         }

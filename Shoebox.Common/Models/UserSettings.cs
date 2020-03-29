@@ -6,6 +6,6 @@ namespace Shoebox.Common
 {
     public class UserSettings
     {
-        public IEnumerable<User> Users { get; set; }
+        public List<User> Users { get; set; }
     }
 }

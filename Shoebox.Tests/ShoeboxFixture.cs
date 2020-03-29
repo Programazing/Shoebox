@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using Shoebox.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,13 +23,17 @@ namespace Shoebox.Tests
         [TearDown]
         public void Teardown()
         {
-            
+            if (File.Exists(SettingsFile.SettingsPath))
+            {
+                File.Delete(SettingsFile.SettingsPath);
+            }
         }
 
         [Test]
         public void ShoeBox_LoadsSettingsFile_WhenNotGivenAPath()
         {
-            SystemUnderTest.Settings.UserSettings.Users.FirstOrDefault().UserName.Should().Be("DefaultUser");
+            SystemUnderTest.Settings.UserSettings.Users.FirstOrDefault()
+                .UserName.Should().Be("DefaultUser");
         }
 
         [Test]
@@ -36,20 +41,28 @@ namespace Shoebox.Tests
         {
             SystemUnderTest = new Common.Shoebox(TestHelpers.DesktopLocation());
 
-            SystemUnderTest.Settings.UserSettings.Users.FirstOrDefault().UserName.Should().Be("DefaultUser");
+            SystemUnderTest.Settings.UserSettings.Users.FirstOrDefault()
+                .UserName.Should().Be("DefaultUser");
         }
 
         [Test]
         public void Shoebox_Adds_AUser()
         {
-            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe"));
+            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
 
             SystemUnderTest
-                .Settings
-                .UserSettings
-                .Users
-                .Where(x => x.UserName == "JohnDoe")
-                .FirstOrDefault().UserName.Should().Be("JohnDoe");
+                .Settings.UserSettings.Users
+                .Where(x => x.UserName == "JohnDoe").FirstOrDefault()
+                .UserName.Should().Be("JohnDoe");
+        }
+
+        [Test]
+        public void Shoebox_WontAdd_AUser_WhenUserNameAlreadyExists()
+        {
+            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "DefaultUser").FirstOrDefault());
+
+            SystemUnderTest.Settings.UserSettings
+                .Users.Count().Should().Be(1);
         }
     }
 }
