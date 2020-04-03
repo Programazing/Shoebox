@@ -32,7 +32,7 @@ namespace Shoebox.Tests
         [Test]
         public void Shoebox_Adds_AUser()
         {
-            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+            SystemUnderTest.AddUser(GetJohnDoe());
 
             SystemUnderTest
                 .Settings.UserSettings.Users
@@ -52,18 +52,34 @@ namespace Shoebox.Tests
         [Test]
         public void Shoebox_Removes_AUser()
         {
-            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+            SystemUnderTest.AddUser(GetJohnDoe());
 
-            SystemUnderTest.RemoveUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+            SystemUnderTest.RemoveUser(GetJohnDoe());
 
             SystemUnderTest.Settings.UserSettings
                 .Users.Count().Should().Be(1);
         }
 
+       [Test]
+        public void Shoebox_Updates_AUser()
+        {
+            SystemUnderTest.AddUser(GetJohnDoe());
+
+            var user = GetJohnDoe();
+
+            user.WatchedDirectories.FirstOrDefault().Path = "NewDirectory";
+
+            SystemUnderTest.UpdateUser(user);
+
+            SystemUnderTest.Settings.UserSettings
+                .Users.Single(x => x.UserName == "JohnDoe")
+                .WatchedDirectories.Should().Contain(x => x.Path == "NewDirectory");
+        }
+
         [Test]
         public void ShoeBox_LoadsUsersFileAssociations_IntoAUsableObject()
         {
-            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+            SystemUnderTest.AddUser(GetJohnDoe());
 
             var user = SystemUnderTest.Settings.UserSettings.Users.Where(x => x.UserName == "JohnDoe").FirstOrDefault();
                 
@@ -75,7 +91,7 @@ namespace Shoebox.Tests
         [Test]
         public void ShoeBox_LoadsUsersWatchedDirectories_IntoAUsableObject()
         {
-            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+            SystemUnderTest.AddUser(GetJohnDoe());
 
             var user = SystemUnderTest.Settings.UserSettings.Users.Where(x => x.UserName == "JohnDoe").FirstOrDefault();
 
@@ -83,5 +99,7 @@ namespace Shoebox.Tests
 
             user.WatchedDirectories.FirstOrDefault().Path.Should().Be("C:\\Users\\John\\Downloads");
         }
+
+        private User GetJohnDoe() => TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault();
     }
 }

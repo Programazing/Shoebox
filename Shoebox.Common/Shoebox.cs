@@ -72,7 +72,7 @@ namespace Shoebox.Common
         {
             if (SettingsContainsUsername(user))
             {
-                var userToRemove = Settings.UserSettings.Users.Single(x => x.UserName == user.UserName);
+                var userToRemove = GetUserFromSettings(user);
                 Settings.UserSettings.Users.Remove(userToRemove);
 
                 SettingsFile.WriteToSettingsFile(Settings);
@@ -81,8 +81,25 @@ namespace Shoebox.Common
             }
         }
 
+        public void UpdateUser(User user)
+        {
+            if (SettingsContainsUsername(user))
+            {
+                var index = Settings.UserSettings.Users.FindIndex(x => x.UserName == user.UserName);
+
+                Settings.UserSettings.Users[index] = user;
+
+                SettingsFile.WriteToSettingsFile(Settings);
+
+                UpdateSettings();
+            }
+        }
+
+        private User GetUserFromSettings(User user) => Settings.UserSettings.Users.Single(x => x.UserName == user.UserName);
+
         private void UpdateSettings() => Settings = ServiceProvider.GetService<App>().GetSettings();
 
         private bool SettingsContainsUsername(User user) => Settings.UserSettings.Users.Any(x => x.UserName == user.UserName);
+
     }
 }
