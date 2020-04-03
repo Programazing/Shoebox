@@ -33,7 +33,7 @@ namespace Shoebox.Common
 
             ServiceProvider = services.BuildServiceProvider();
 
-            Settings = ServiceProvider.GetService<App>().GetSettings();
+            UpdateSettings();
         }
 
         private void ConfigureServices(IServiceCollection services)
@@ -81,10 +81,7 @@ namespace Shoebox.Common
             }
         }
 
-        private void UpdateSettings()
-        {
-            Settings = ServiceProvider.GetService<App>().GetSettings();
-        }
+        private void UpdateSettings() => Settings = ServiceProvider.GetService<App>().GetSettings();
 
         private bool SettingsContainsUsername(User user) => Settings.UserSettings.Users.Any(x => x.UserName == user.UserName);
     }

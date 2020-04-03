@@ -20,10 +20,7 @@ namespace Shoebox.Common
             _appSettings = appSettings?.Value ?? throw new ArgumentNullException(nameof(appSettings));
         }
 
-        public Settings GetSettings()
-        {
-            return _appSettings;
-        }
+        public Settings GetSettings() => _appSettings;
 
     }
 }
