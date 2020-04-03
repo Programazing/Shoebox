@@ -52,8 +52,8 @@ namespace Shoebox.Tests
             };
             var fileAssociations = new List<FileAssociation>
             {
-                new FileAssociation() { Action = "Move", Destination = "D:\\P.Desktop\\John\\Pictures", FileTypes = ".jpg", Name = "Images" },
-                new FileAssociation() { Action = "Copy", Destination = "D:\\P.Desktop\\John\\Documents", FileTypes = ".txt", Name = "Documents" }
+                new FileAssociation() { Action = "Move", Destination = Pics, FileTypes = ".jpg", Name = "Images" },
+                new FileAssociation() { Action = "Copy", Destination = Docs, FileTypes = ".txt", Name = "Documents" }
             };
             return new User() { UserName = "JohnDoe", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories };
         }
