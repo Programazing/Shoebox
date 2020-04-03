@@ -72,5 +72,16 @@ namespace Shoebox.Tests
             user.FileAssociations.FirstOrDefault().Name.Should().Be("Images");
         }
 
+        [Test]
+        public void ShoeBox_LoadsUsersWatchedDirectories_IntoAUsableObject()
+        {
+            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+
+            var user = SystemUnderTest.Settings.UserSettings.Users.Where(x => x.UserName == "JohnDoe").FirstOrDefault();
+
+            user.WatchedDirectories.Count().Should().Be(2);
+
+            user.WatchedDirectories.FirstOrDefault().Path.Should().Be("C:\\Users\\John\\Downloads");
+        }
     }
 }

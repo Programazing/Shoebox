@@ -29,7 +29,8 @@ namespace Shoebox.Tests
         {
             var watchedDirectories = new List<WatchedDirectories>
             {
-                new WatchedDirectories() { Path = "C:\\Users\\John\\Downloads" } 
+                new WatchedDirectories() { Path = "C:\\Users\\John\\Downloads" },
+                new WatchedDirectories() { Path = "C:\\Users\\John\\Desktop" }
             };
             var fileAssociations = new List<FileAssociations>
             {
