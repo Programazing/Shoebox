@@ -43,10 +43,10 @@ namespace Shoebox.Common
         {
             var appSettings = new AppSettings();
             var watchedDirectories = new List<WatchedDirectories> { new WatchedDirectories() { Path = "" } };
-            var fileAssociation = new FileAssociations() { Action = "Copy", Destination = "", FileTypes = "", Name = "" };
-            var fileAssociations = new List<FileAssociations> { fileAssociation };
+            var fileAssociation = new FileAssociation() { Action = "Copy", Destination = "", FileTypes = "", Name = "" };
+            var fileAssociations = new List<FileAssociation> { fileAssociation };
             var users = new List<User> { new User() { UserName = "DefaultUser", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories }};
-            var userSettings = new UserSettings() { Users = users };
+            var userSettings = new UserSettings() { Users = users, CurrentUser = "DefaultUser" };
             var settings = new Settings() { AppSettings = appSettings, UserSettings = userSettings };
 
             return settings;

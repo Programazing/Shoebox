@@ -18,6 +18,7 @@ namespace Shoebox.Tests
         public void Setup()
         {
             SystemUnderTest = new Common.Shoebox();
+            TestHelpers.CreateFoldersForJohn();
         }
 
         [TearDown]
@@ -27,6 +28,8 @@ namespace Shoebox.Tests
             {
                 File.Delete(SettingsFile.SettingsPath);
             }
+
+            TestHelpers.DeleteFoldersForJohn();
         }
 
         [Test]
@@ -45,6 +48,19 @@ namespace Shoebox.Tests
                 .UserName.Should().Be("DefaultUser");
         }
 
-        
+        [Test]
+        public void ShoeBox_CanMoveCorrectFileTypes_FromWatchedDirectories_ToDestinationFolders()
+        {
+            var user = TestHelpers.GetJohnDoe();
+            SystemUnderTest.AddUser(user);
+
+            SystemUnderTest.ChangeCurrentUser(user);
+
+            SystemUnderTest.Start();
+
+            var fileIsThere = File.Exists(Path.Combine(TestHelpers.Downloads, "test.txt"));
+
+            fileIsThere.Should().BeTrue();
+        }
     }
 }

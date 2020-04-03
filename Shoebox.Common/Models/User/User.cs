@@ -8,6 +8,6 @@ namespace Shoebox.Common
     {
         public string UserName { get; set; } = "";
         public List<WatchedDirectories> WatchedDirectories { get; set; }
-        public List<FileAssociations> FileAssociations { get; set; }
+        public List<FileAssociation> FileAssociations { get; set; }
     }
 }

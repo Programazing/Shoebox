@@ -33,7 +33,7 @@ namespace Shoebox.Common
 
             ServiceProvider = services.BuildServiceProvider();
 
-            UpdateSettings();
+            RefreshSettings();
         }
 
         private void ConfigureServices(IServiceCollection services)
@@ -56,14 +56,20 @@ namespace Shoebox.Common
             services.AddTransient<App>();
         }
 
+        public void ChangeCurrentUser(User user)
+        {
+            Settings.UserSettings.CurrentUser = user.UserName;
+
+            UpdateSettings();
+        }
+
+        public void Start() => ServiceProvider.GetService<App>().Start();
+
         public void AddUser(User user)
         {
             if(!SettingsContainsUsername(user))
             {
                 Settings.UserSettings.Users.Add(user);
-
-                SettingsFile.WriteToSettingsFile(Settings);
-
                 UpdateSettings();
             }
         }
@@ -74,8 +80,6 @@ namespace Shoebox.Common
             {
                 var userToRemove = GetUserFromSettings(user);
                 Settings.UserSettings.Users.Remove(userToRemove);
-
-                SettingsFile.WriteToSettingsFile(Settings);
 
                 UpdateSettings();
             }
@@ -89,15 +93,20 @@ namespace Shoebox.Common
 
                 Settings.UserSettings.Users[index] = user;
 
-                SettingsFile.WriteToSettingsFile(Settings);
-
                 UpdateSettings();
             }
         }
 
         private User GetUserFromSettings(User user) => Settings.UserSettings.Users.Single(x => x.UserName == user.UserName);
 
-        private void UpdateSettings() => Settings = ServiceProvider.GetService<App>().GetSettings();
+        private void UpdateSettings()
+        {
+            SettingsFile.WriteToSettingsFile(Settings);
+
+            RefreshSettings();
+        }
+
+        private void RefreshSettings() => Settings = ServiceProvider.GetService<App>().GetSettings();
 
         private bool SettingsContainsUsername(User user) => Settings.UserSettings.Users.Any(x => x.UserName == user.UserName);
 
