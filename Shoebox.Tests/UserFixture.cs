@@ -59,5 +59,18 @@ namespace Shoebox.Tests
             SystemUnderTest.Settings.UserSettings
                 .Users.Count().Should().Be(1);
         }
+
+        [Test]
+        public void ShoeBox_LoadsUsersFileAssociations_IntoAUsableObject()
+        {
+            SystemUnderTest.AddUser(TestHelpers.Users().Where(x => x.UserName == "JohnDoe").FirstOrDefault());
+
+            var user = SystemUnderTest.Settings.UserSettings.Users.Where(x => x.UserName == "JohnDoe").FirstOrDefault();
+                
+            user.FileAssociations.Count().Should().Be(2);
+
+            user.FileAssociations.FirstOrDefault().Name.Should().Be("Images");
+        }
+
     }
 }

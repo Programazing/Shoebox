@@ -19,10 +19,24 @@ namespace Shoebox.Tests
             var fileAssociation = new FileAssociations() { Action = "Copy", Destination = "", FileTypes = "", Name = "" };
             var fileAssociations = new List<FileAssociations> { fileAssociation };
             return new List<User>
-            { 
+            {
                 new User() { UserName = "DefaultUser", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories },
-                new User() { UserName = "JohnDoe", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories }
+                JohnDoe()
             };
+        }
+
+        private static User JohnDoe()
+        {
+            var watchedDirectories = new List<WatchedDirectories>
+            {
+                new WatchedDirectories() { Path = "C:\\Users\\John\\Downloads" } 
+            };
+            var fileAssociations = new List<FileAssociations>
+            {
+                new FileAssociations() { Action = "Move", Destination = "C:\\Users\\John\\Pictures", FileTypes = ".jpg", Name = "Images" },
+                new FileAssociations() { Action = "Copy", Destination = "C:\\Users\\John\\Documents", FileTypes = ".txt", Name = "Documents" }
+            };
+            return new User() { UserName = "JohnDoe", FileAssociations = fileAssociations, WatchedDirectories = watchedDirectories };
         }
 
         private static Settings DefaultSettings()
